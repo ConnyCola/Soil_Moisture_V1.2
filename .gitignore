@@ -1,0 +1,10 @@
+*.obj
+*.map
+*.settings
+*.map
+
+# Build results
+
+Debug/*
+.settings/
+.launches/Soil_Moisture_V1.2.launch
