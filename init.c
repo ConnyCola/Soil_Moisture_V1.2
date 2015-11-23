@@ -21,6 +21,7 @@ void init_system(void)
     init_pulse();                       // init. pulse for cap_meas
     init_ADC();                         // init. ADC10
     init_spi();                         // init. SPI module
+    init_uart();
     init_led();                         // init. LED
     init_switch();                      // init. switch for calibration
     init_flash();                       // init. flash for write operation
@@ -45,6 +46,18 @@ void init_flash(void)
 //PULSE INITIALIZATION
 void init_pulse(void)
   {
+
+    P1DIR |= BIT2;                  // config P1.2 as TA0.1
+    P1SEL |= BIT2;
+
+    TA0CCR0 = PULSE_PERIOD;         // PULSE Period
+    TA0CCR1 = PULSE_WIDTH;
+    TACCTL1 = OUTMOD_7;             // Toggle Mode
+    TA0CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+    TA0CTL &= ~TAIE;
+
+
+	/*
     P1DIR |= BIT1;                  // config P1.1 as TA0.1
     P1SEL |= BIT1;
 
@@ -53,6 +66,7 @@ void init_pulse(void)
     TACCTL1 = OUTMOD_7;             // Toggle Mode
     TA0CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
     TA0CTL &= ~TAIE;
+    */
   }
 
 //ADC10 INITIALIZATION
@@ -65,19 +79,19 @@ void init_ADC(void)
 //SWITCH INITIALIZATION
 void init_switch()
   {
-    P2DIR &= ~CAL_SW;                     // P1.0 = input
-    P2REN |= CAL_SW;                      // Pullup/down resistor enabled
-    P2OUT |= CAL_SW;                      // Pin is pulled enabled
-    P2IES |= CAL_SW;                      // rising edge
-    P2IE |= CAL_SW;                       // interrupt enable
-    P2IFG &= ~CAL_SW;                     // clear interrupt flag
+    P1DIR &= ~CAL_SW;                     // P1.0 = input
+    P1REN |= CAL_SW;                      // Pullup/down resistor enabled
+    P1OUT |= CAL_SW;                      // Pin is pulled enabled
+    P1IES |= CAL_SW;                      // rising edge
+    P1IE |= CAL_SW;                       // interrupt enable
+    P1IFG &= ~CAL_SW;                     // clear interrupt flag
   }
 
 //LED INITIALIZATION
 void init_led(void)
   {
-    P2DIR |= LED_GR + LED_YE;             // conifg LED output pins
-    P2OUT &= ~LED_GR + ~LED_YE;           // turn off LEDs
+    P1DIR |= LED_GR + LED_YE;             // conifg LED output pins
+    P1OUT &= ~LED_GR + ~LED_YE;           // turn off LEDs
   }
 
 //SPI INITIALIZATION
@@ -88,7 +102,6 @@ void init_spi(void)
     P4SEL &= ~CS1;
 
     P3SEL |= 0x0C;                            		// P3.3,2 USCI_B0 option select
-    P3DIR |= 0x01;                            		// P3.0 output direction
     UCB0CTL0 |= UCMSB + UCMST + UCSYNC;       		// 3-pin, 8-bit SPI mstr, MSB 1st
     UCB0CTL1 |= UCSSEL_2;                     		// SMCLK
     UCB0BR0 = 0x02;

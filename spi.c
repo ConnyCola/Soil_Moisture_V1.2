@@ -37,6 +37,6 @@ void spi_send(unsigned char device, unsigned char data)
     UCB0TXBUF = *ptr_message;              	// write data to send into fifo
     //USICNT |= 16;                         // reload counter
     while (!(IFG2 & UCB0TXIFG));            // USCI_B0 TX buffer ready?
-    P1OUT |= CS1;                           // CSs hi
+    P4OUT |= CS1;                           // CSs hi
 
   }

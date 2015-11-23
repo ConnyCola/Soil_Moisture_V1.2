@@ -60,7 +60,7 @@ void main(void)
     spi_send(DAC_VREF_H, *ptr_spi_data);
 
     while(1)						// continous program cycle
-      { 
+      {
         /*
         //-------------TEMPERATURE-----------
         *ptr_temp_raw = read_ADC(ADC_TEMP);
@@ -185,12 +185,12 @@ __interrupt void USCI0RX_ISR(void)
 		cmd.val1 = 1;
 		break;
 	case CMD_DRY:
-		//*ptr_vref_l = 330; //*ptr_mois_raw;
+		//*ptr_vref_l = 10; //*ptr_mois_raw;
 		*ptr_vref_l = *ptr_mois_raw;
 		cmd.val1 = *ptr_vref_l;
 		break;
 	case CMD_WET:
-		//*ptr_vref_h = 970; //*ptr_mois_raw;
+		//*ptr_vref_h = 1010; //*ptr_mois_raw;
 		*ptr_vref_h = *ptr_mois_raw;
 		cmd.val1 = *ptr_vref_h;
 		break;

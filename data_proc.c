@@ -42,5 +42,6 @@ unsigned char conv_dac(float voltage)
 int calc_mois_perc(long raw){
 	float back = 0;
 	back = ((100*(long)(raw - *ptr_vref_l))/((long)(*ptr_vref_h - *ptr_vref_l)));
+	back = (back>100)||(back<0) ? 0 : back;
 	return back;
 }

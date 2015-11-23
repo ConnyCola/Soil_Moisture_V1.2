@@ -5,14 +5,13 @@
 
 
 // calibration switch
-#define CAL_SW BIT5
+#define CAL_SW BIT4
 // SPI chip-select ports
 #define CS1 BIT2
-#define CS2 BIT0
-#define CS3 BIT1
+
 // user interface LEDs
-#define LED_YE BIT4
-#define LED_GR BIT3
+#define LED_YE BIT5
+#define LED_GR BIT6
 // test signal on port 2.2 / pin10
 #define TEST_TRIGGER BIT2
                                                                     /* E_PORTDEF */

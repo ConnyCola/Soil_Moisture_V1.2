@@ -19,17 +19,17 @@ int read_ADC(unsigned char adc_mode)
                         __delay_cycles (128);             // let Vref settle
                         break;
         case ADC_MOIS:  ADC10CTL0 = REFON + REF2_5V + SREF_1 + ADC10SHT_0 + ADC10ON;
-                        ADC10CTL1 = INCH_1 + ADC10SSEL_3 + ADC10DIV_4;
-                        ADC10AE0 = BIT1;
+        				//ADC10CTL0 = ADC10SHT_2 + ADC10ON;
+                        ADC10CTL1 = INCH_0 + ADC10SSEL_3 + ADC10DIV_4;
+                        ADC10AE0 = BIT0;
                         __delay_cycles (128);             // let Vref settle
                         break;
         case ADC_VCC:   ADC10CTL0 = REFON + SREF_1 + ADC10SHT_3 + ADC10ON;
-                        ADC10CTL1 = INCH_0 + ADC10DIV_3;
-                        ADC10AE0 = BIT0;
+                        ADC10CTL1 = INCH_1 + ADC10DIV_3;
+                        ADC10AE0 = BIT1;
                         __delay_cycles (128);             // let Vref settle
       default:        break;
       }                                                              /* E_SETADC */
-                                                                     /* S_READADC */
     while(TA0R != 14){};                // trigger ADC
     ADC10CTL0 |= ENC + ADC10SC;         // start sampling and conversion
     while (ADC10CTL1 & ADC10BUSY){};    // wait for conversion completion
