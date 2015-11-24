@@ -158,7 +158,7 @@ __interrupt void Port_2(void)
 __interrupt void USCI0RX_ISR(void)
 {
 	//TEST structure
-	*ptr_mois_perc = *ptr_mois_perc < 100 ? *ptr_mois_perc+1 : 0;
+	//*ptr_mois_perc = *ptr_mois_perc <= 100 ? *ptr_mois_perc : 0;
 
 	static int cmdMode = 0;
 	CMD cmd;
@@ -175,33 +175,31 @@ __interrupt void USCI0RX_ISR(void)
 	case CMD_VOLT:
 		cmd.val1 = (*ptr_mois_perc*25);
 		break;
-	case CMD_MIN:
+	case CMD_MIN: //C
 		cmd.val1 = *ptr_vref_l;
 		break;
-	case CMD_MAX:
+	case CMD_MAX: //D
 		cmd.val1 = *ptr_vref_h;
 		break;
-	case CMD_CALI:
+	case CMD_CALI: //E
 		cmd.val1 = 1;
 		break;
-	case CMD_DRY:
-		//*ptr_vref_l = 10; //*ptr_mois_raw;
-		*ptr_vref_l = *ptr_mois_raw;
-		cmd.val1 = *ptr_vref_l;
-		break;
-	case CMD_WET:
-		//*ptr_vref_h = 1010; //*ptr_mois_raw;
+	case CMD_DRY:  //F
 		*ptr_vref_h = *ptr_mois_raw;
 		cmd.val1 = *ptr_vref_h;
 		break;
-	case CMD_FIN:
+	case CMD_WET:  //G
+		*ptr_vref_l = *ptr_mois_raw;
+		cmd.val1 = *ptr_vref_l;
+		break;
+	case CMD_FIN:  //H
 		cmd.val1 = 1;
         erase_flash(FLASH_VREF_L);
         write_flash_Vref(*ptr_vref_l, *ptr_vref_h, *ptr_vref_vcc); 	// write config values to info flash
 		break;
 	case CMD_TEST:
-		*ptr_vref_l = 450;
-		*ptr_vref_h = 1033;
+		*ptr_vref_l = 750;
+		*ptr_vref_h = 1023;
 		break;
 	case CMD_VERS:
 		cmd.val1 = VERSION;

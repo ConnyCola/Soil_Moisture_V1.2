@@ -11,7 +11,6 @@ unsigned int meas_moisture(void)
     
     start_pulse();
 
-
      __delay_cycles(40000);   // let measure voltage settle
      *ptr_mois_raw = 0;
 
@@ -21,8 +20,6 @@ unsigned int meas_moisture(void)
          *ptr_mois_raw = *ptr_mois_raw + read_ADC(ADC_MOIS);
        }
      *ptr_mois_raw = *ptr_mois_raw / 30;
-
-
 
      stop_pulse();
      return *ptr_mois_raw;
