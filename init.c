@@ -96,17 +96,16 @@ void init_led(void)
 
 //SPI INITIALIZATION
 void init_spi(void)
-{
-	//CS
+{	//CS
 	P4DIR |= CS1;
-    P4SEL &= ~CS1;
+	P4OUT |= CS1;
 
-    P3SEL |= 0x0C;                            		// P3.3,2 USCI_B0 option select
-    UCB0CTL0 |= UCMSB + UCMST + UCSYNC;       		// 3-pin, 8-bit SPI mstr, MSB 1st
-    UCB0CTL1 |= UCSSEL_2;                     		// SMCLK
+    P3SEL |= BIT3 + BIT1;                  		// P3.3,1 USCI_B0 option select
+    UCB0CTL0 |= UCMSB + UCMST + UCSYNC + UCCKPH;       	// 3-pin, 8-bit SPI mstr, MSB 1st
+    UCB0CTL1 |= UCSSEL_2;                  		// SMCLK
     UCB0BR0 = 0x02;
     UCB0BR1 = 0;
-    UCB0CTL1 &= ~UCSWRST;                     		// **Initialize USCI state machine**
+    UCB0CTL1 &= ~UCSWRST;                     	// **Initialize USCI state machine**
 
   }
 
