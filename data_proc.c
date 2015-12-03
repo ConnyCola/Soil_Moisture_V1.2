@@ -27,7 +27,8 @@ unsigned char conv_mois(unsigned int v)
 unsigned char conv_mois_dac(int raw)
   {
 	long back = 0;
-	back = ((255*(long)(raw - *ptr_vref_l))/((long)(*ptr_vref_h - *ptr_vref_l)));
+	back = 255 - ((255*(long)(raw - *ptr_vref_l))/((long)(*ptr_vref_h - *ptr_vref_l)));
+	back = (back>255) ? 255 : (back<0) ? 0 : back;
 	return (unsigned char)back;
   }
 
