@@ -13,28 +13,30 @@ void spi_send(unsigned char device, unsigned char data)
 
     switch(device)                                                
       {
-        case DAC_VREF_H:    P4OUT &= ~CS1;            // select DAC1, CS1 lo
+        case DAC_VREF_H:    *ptr_message &= ~(1<<15);   // DAC module A
+        					*ptr_message |=  (1<<13);  	// DAC gain 1x (2.048V)
+        					*ptr_message &= ~(1<<12);	//shutdown the module A
                             break;
 
-        case DAC_OUT_MOIS:  *ptr_message |= (1<<15);   // DAC module B
-                            *ptr_message |=(1 << 13);  // DAC gain 1x (2.048V)
+        case DAC_OUT_MOIS:  *ptr_message |= (1<<15);   	// DAC module B
+                            *ptr_message |= (1<<13);  	// DAC gain 1x (2.048V)
+                            *ptr_message |= (1<<12);   	// activate DAC
                             break;
         /*
-        case DAC_OUT_MOIS:  P4OUT |= CS1;             // select DAC2, CS2 lo
+        case DAC_OUT_MOIS:  P4OUT |= CS1;             	// select DAC2, CS2 lo
                             P4OUT &= ~CS2;
-                            *ptr_message |=(1 << 13); // DAC gain 1x (2.048V)
+                            *ptr_message |=(1 << 13); 	// DAC gain 1x (2.048V)
                             break;
 
-        case DAC_OUT_TEMP:  P4OUT |= CS1;             // select DAC2, CS2 lo
+        case DAC_OUT_TEMP:  P4OUT |= CS1;             	// select DAC2, CS2 lo
                             P4OUT &= ~CS2;
-                            *ptr_message |=(1<<15);   // DAC module B
-                            *ptr_message |=(1 << 13); // DAC gain 1x (2.048V)
+                            *ptr_message |=(1<<15);   	// DAC module B
+                            *ptr_message |=(1 << 13); 	// DAC gain 1x (2.048V)
                             break;
         */
         default:            break;
       }
 
-    *ptr_message |=(1 << 12);               // activate DAC
     *ptr_message |=(*ptr_data << 4);        // add voltage level information
 
 
