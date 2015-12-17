@@ -86,6 +86,9 @@ void main(void)
         _DINT();
         spi_send(DAC_OUT_MOIS, mois_out);
         _EINT();
+
+
+
       }
   }
 
@@ -97,6 +100,7 @@ void main(void)
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void)
   {
+	/*
         unsigned int adc_value;
         unsigned int  *ptr_adc_value;
         ptr_adc_value = &adc_value;
@@ -112,12 +116,12 @@ __interrupt void Port_2(void)
         spi_send(DAC_VREF_H, *ptr_spi_data);
 
         //TODO: delete me
-        /* OBSOLET
-        *ptr_spi_data = 0;                         	// set VREF- to GND
-        spi_send(DAC_VREF_L, *ptr_spi_data);
-        *ptr_spi_data = 255;                       	// set Vref+ to Vcc
-        spi_send(DAC_VREF_H, *ptr_spi_data);
-        */
+        // OBSOLET
+//        *ptr_spi_data = 0;                         	// set VREF- to GND
+//        spi_send(DAC_VREF_L, *ptr_spi_data);
+//        *ptr_spi_data = 255;                       	// set Vref+ to Vcc
+//        spi_send(DAC_VREF_H, *ptr_spi_data);
+//
         
         // meas moisture with maximum delta_Volt DRY
         blink_led_poll_sw(LED_YE);
@@ -138,17 +142,18 @@ __interrupt void Port_2(void)
         confirm_led(LED_GR);
         
         //TODO: delete me
-        /*  OBSOLET
+        //  OBSOLET
         // set references for ADC10
-        *ptr_spi_data = conv_dac(*ptr_vref_l);
-        spi_send(DAC_VREF_L, *ptr_spi_data);
-        *ptr_spi_data = conv_dac(*ptr_vref_h);
-        spi_send(DAC_VREF_H, *ptr_spi_data);
-        */
+//        *ptr_spi_data = conv_dac(*ptr_vref_l);
+//        spi_send(DAC_VREF_L, *ptr_spi_data);
+//        *ptr_spi_data = conv_dac(*ptr_vref_h);
+//        spi_send(DAC_VREF_H, *ptr_spi_data);
+
         
 
         P2IFG &= ~CAL_SW;                     // clear interrupt flag
         _EINT();                              // enable interrupt
+        */
   }
 
 #define _UART
@@ -204,6 +209,8 @@ __interrupt void USCI0RX_ISR(void)
 	case CMD_VERS:
 		cmd.val1 = VERSION;
 		cmd.val2 = BUILD;
+		break;
+	case CMD_RSSI:
 		break;
 	default:
 		cmd.cmd = CMD_ERROR;

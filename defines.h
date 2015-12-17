@@ -65,4 +65,5 @@
 #define CMD_FIN  'H'
 #define CMD_TEST 'I'
 #define CMD_VERS 'J'
+#define CMD_RSSI 'K'
 #define CMD_ERROR 'Z'
