@@ -100,6 +100,7 @@ void main(void)
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void)
   {
+    P2IFG &= ~CAL_SW;                     // clear interrupt flag
 	/*
         unsigned int adc_value;
         unsigned int  *ptr_adc_value;
@@ -174,10 +175,10 @@ __interrupt void USCI0RX_ISR(void)
 	cmd.val2 = 0x00;
 
 	switch (cmd.cmd) {
-	case CMD_MOIS:
+	case CMD_MOIS: //A
 		cmd.val1 = *ptr_mois_perc;
 		break;
-	case CMD_VOLT:
+	case CMD_VOLT: //B
 		cmd.val1 = (*ptr_mois_perc*25);
 		break;
 	case CMD_MIN: //C
@@ -202,15 +203,15 @@ __interrupt void USCI0RX_ISR(void)
         erase_flash(FLASH_VREF_L);
         write_flash_Vref(*ptr_vref_l, *ptr_vref_h, *ptr_vref_vcc); 	// write config values to info flash
 		break;
-	case CMD_TEST:
+	case CMD_TEST: //I
 		*ptr_vref_l = 750;
 		*ptr_vref_h = 1023;
 		break;
-	case CMD_VERS:
+	case CMD_VERS: //J
 		cmd.val1 = VERSION;
 		cmd.val2 = BUILD;
 		break;
-	case CMD_RSSI:
+	case CMD_RSSI: //K
 		break;
 	default:
 		cmd.cmd = CMD_ERROR;
