@@ -23,7 +23,7 @@ void init_system(void)
     init_spi();                         // init. SPI module
     init_uart();
     init_led();                         // init. LED
-    init_switch();                      // init. switch for calibration
+    //init_switch();                      // init. switch for calibration
     init_flash();                       // init. flash for write operation
     load_cal();                         // load calibration data
     __delay_cycles(128);

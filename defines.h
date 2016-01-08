@@ -1,7 +1,7 @@
 //___PORT DEFINITIONS___                                            /* S_PORTDEF */
 
 #define VERSION 102
-#define BUILD   5
+#define BUILD   6
 
 
 // calibration switch

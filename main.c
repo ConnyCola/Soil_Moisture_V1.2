@@ -100,7 +100,7 @@ void main(void)
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void)
   {
-    P2IFG &= ~CAL_SW;                     // clear interrupt flag
+    P1IFG &= ~CAL_SW;                     // clear interrupt flag
 	/*
         unsigned int adc_value;
         unsigned int  *ptr_adc_value;
