@@ -3,24 +3,23 @@
 #include "pulse.h"
 #include "adc.h"
 
-unsigned int meas_moisture(void)
-  {
-    unsigned int mois_raw;
-    unsigned int *ptr_mois_raw; 
-    ptr_mois_raw = &mois_raw;
-    
-    start_pulse();
+unsigned int meas_moisture(void){
+	unsigned int mois_raw;
+	unsigned int *ptr_mois_raw;
+	ptr_mois_raw = &mois_raw;
 
-     __delay_cycles(40000);   // let measure voltage settle
-     *ptr_mois_raw = 0;
+	start_pulse();
 
-     int j=0;
-     for (j=0; j<30; j++)    // averaged moisture value
-       {
-         *ptr_mois_raw = *ptr_mois_raw + read_ADC(ADC_MOIS);
-       }
-     *ptr_mois_raw = *ptr_mois_raw / 30;
+	__delay_cycles(40000);		// let measure voltage settle
+	*ptr_mois_raw = 0;
 
-     stop_pulse();
-     return *ptr_mois_raw;
-  }
+	int j=0;
+	for (j=0; j<30; j++)		// averaged moisture value
+	{
+		*ptr_mois_raw = *ptr_mois_raw + read_ADC(ADC_MOIS);
+	}
+	*ptr_mois_raw = *ptr_mois_raw / 30;
+
+	stop_pulse();
+	return *ptr_mois_raw;
+}

@@ -1,5 +1,7 @@
 /*
- * Original Michael Oberacher Code for Soil_moisture Sensor SMS50-v1
+ * original Code for Soil_moisture Sensor SMS50-v1 /Michael Oberacher
+ * first rewrite for SMS50-v2 in October 2015 /Matthias Wagner
+ * Changelog
  * - Vref change to internal 2,5V
  * - flash fixup
  * - Calculation formula change
@@ -40,7 +42,6 @@ unsigned int *ptr_mois_raw;			// raw mois 0 - 1024
 float test_mois_volt;				//test variable
 
 //PROGRAMMCODE
-
 void main(void)
   {
     ptr_temp_raw = &temp_raw;		// pointer allocations
@@ -87,8 +88,6 @@ void main(void)
         spi_send(DAC_OUT_MOIS, mois_out);
         _EINT();
 
-
-
       }
   }
 
@@ -98,64 +97,65 @@ void main(void)
 // CALIBRATION INTERRUPT FROM SWITCH
 // Port 1 interrupt service routine
 #pragma vector=PORT2_VECTOR
-__interrupt void Port_2(void)
-  {
-    P1IFG &= ~CAL_SW;                     // clear interrupt flag
-	/*
-        unsigned int adc_value;
-        unsigned int  *ptr_adc_value;
-        ptr_adc_value = &adc_value;
-        
-        _DINT();                                   	// disable interrupt
-                     
-        *ptr_adc_value = read_ADC(ADC_VCC);        	// measure supply voltage
-        
-        *ptr_vref_vcc = *ptr_adc_value;  			// save VCC val
-        
-        // Set Vref+ to max to be able to use internal Vref2.5
-        *ptr_spi_data = 255;                       	// set Vref+ to Vcc
-        spi_send(DAC_VREF_H, *ptr_spi_data);
+__interrupt void Port_2(void){
+	P1IFG &= ~CAL_SW;                     		// clear interrupt flag
 
-        //TODO: delete me
-        // OBSOLET
-//        *ptr_spi_data = 0;                         	// set VREF- to GND
-//        spi_send(DAC_VREF_L, *ptr_spi_data);
-//        *ptr_spi_data = 255;                       	// set Vref+ to Vcc
-//        spi_send(DAC_VREF_H, *ptr_spi_data);
-//
-        
-        // meas moisture with maximum delta_Volt DRY
-        blink_led_poll_sw(LED_YE);
-        *ptr_mois_raw = meas_moisture();
-        *ptr_vref_h = (*ptr_mois_raw);				// save high reference raw
-        
-        confirm_led(LED_YE);
-        
-        // meas moisture with maximum delta_Volt MOIST
-        blink_led_poll_sw(LED_GR);
-        *ptr_mois_raw = meas_moisture();
-        *ptr_vref_l = (*ptr_mois_raw);				// save low reference raw
-        
-        erase_flash(FLASH_VREF_L);
-        
-        write_flash_Vref(*ptr_vref_l, *ptr_vref_h, *ptr_vref_vcc); 	// write config values to info flash
+	//TODO: delete after next hardware version
+/*
+	unsigned int adc_value;
+	unsigned int  *ptr_adc_value;
+	ptr_adc_value = &adc_value;
 
-        confirm_led(LED_GR);
-        
-        //TODO: delete me
-        //  OBSOLET
-        // set references for ADC10
-//        *ptr_spi_data = conv_dac(*ptr_vref_l);
-//        spi_send(DAC_VREF_L, *ptr_spi_data);
-//        *ptr_spi_data = conv_dac(*ptr_vref_h);
-//        spi_send(DAC_VREF_H, *ptr_spi_data);
+	_DINT();									// disable interrupt
+
+	*ptr_adc_value = read_ADC(ADC_VCC);			// measure supply voltage
+
+	*ptr_vref_vcc = *ptr_adc_value;  			// save VCC val
+
+	// Set Vref+ to max to be able to use internal Vref2.5
+	*ptr_spi_data = 255;                       	// set Vref+ to Vcc
+	spi_send(DAC_VREF_H, *ptr_spi_data);
+
+	//TODO: delete me
+	// OBSOLET
+	//*ptr_spi_data = 0;                         	// set VREF- to GND
+	//spi_send(DAC_VREF_L, *ptr_spi_data);
+	//*ptr_spi_data = 255;                       	// set Vref+ to Vcc
+	//spi_send(DAC_VREF_H, *ptr_spi_data);
 
         
+	// meas moisture with maximum delta_Volt DRY
+	blink_led_poll_sw(LED_YE);
+	*ptr_mois_raw = meas_moisture();
+	*ptr_vref_h = (*ptr_mois_raw);				// save high reference raw
 
-        P2IFG &= ~CAL_SW;                     // clear interrupt flag
-        _EINT();                              // enable interrupt
-        */
-  }
+	confirm_led(LED_YE);
+
+	// meas moisture with maximum delta_Volt MOIST
+	blink_led_poll_sw(LED_GR);
+	*ptr_mois_raw = meas_moisture();
+	*ptr_vref_l = (*ptr_mois_raw);				// save low reference raw
+
+	erase_flash(FLASH_VREF_L);
+
+	write_flash_Vref(*ptr_vref_l, *ptr_vref_h, *ptr_vref_vcc); 	// write config values to info flash
+
+	confirm_led(LED_GR);
+        
+	//TODO: delete me
+	//  OBSOLET
+	// set references for ADC10
+	//*ptr_spi_data = conv_dac(*ptr_vref_l);
+	//spi_send(DAC_VREF_L, *ptr_spi_data);
+	//*ptr_spi_data = conv_dac(*ptr_vref_h);
+	//spi_send(DAC_VREF_H, *ptr_spi_data);
+
+        
+
+	P2IFG &= ~CAL_SW;                     // clear interrupt flag
+	_EINT();                              // enable interrupt
+*/
+}
 
 #define _UART
 
